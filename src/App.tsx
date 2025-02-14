@@ -1,11 +1,18 @@
-import { ChangeEvent, useState } from "react";
-import { HEROES } from "./data/heroes-dummy";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Hero } from "./types/hero";
 import HeroDetails from "./Components/HeroDetails";
 
 function App() {
-  const [heroes, setHeroes] = useState<Hero[]>(HEROES);
+  const [heroes, setHeroes] = useState<Hero[]>([]);
   const [currHeroId, setCurrHeroId] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/heroes")
+      .then((res) => res.json())
+      .then((data) => {
+        setHeroes(data);
+      });
+  }, []);
 
   const currHero = heroes.find((hero) => hero.id === currHeroId);
 
