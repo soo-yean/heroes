@@ -1,10 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { HEROES } from "./data/heroes-dummy";
-
-type Hero = {
-  id: number;
-  name: string;
-};
+import { Hero } from "./types/hero";
 
 function App() {
   const heroes: Hero[] = HEROES;
