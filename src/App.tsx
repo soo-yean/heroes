@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import { HEROES } from "./data/heroes-dummy";
 
 type Hero = {
   id: number;
@@ -6,6 +7,7 @@ type Hero = {
 };
 
 function App() {
+  const heroes: Hero[] = HEROES;
   const [hero, setHero] = useState<Hero>({ id: 1, name: "Wolverine" });
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -14,6 +16,26 @@ function App() {
 
   return (
     <div className="container mt-5 mx-auto">
+      <h2 className="text-2xl">My heroes</h2>
+      <ul className="flex flex-col gap-2 my-3">
+        {/* 
+        () => {
+          return 
+        } 
+          equals
+        () => () */}
+        {heroes.map((hero) => (
+          <li key={hero.id} className="flex">
+            <span className="bg-blue-600 text-white rounded-l p-2">
+              {hero.id}
+            </span>
+            <span className="bg-yellow-300 rounded-r w-1/4 p-2">
+              {hero.name}
+            </span>
+          </li>
+        ))}
+      </ul>
+
       <h2 className="text-2xl">Details</h2>
       <div>
         <span className="font-bold">ID: </span>
