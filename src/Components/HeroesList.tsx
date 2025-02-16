@@ -2,12 +2,14 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Hero } from "../types/hero";
 import HeroDetails from "../Components/HeroDetails";
 
+const URL = import.meta.env.VITE_API_URL;
+
 export default function HeroesList() {
   const [heroes, setHeroes] = useState<Hero[]>([]);
   const [currHeroId, setCurrHeroId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/heroes")
+    fetch(`${URL}/heroes`)
       .then((res) => res.json())
       .then((data) => {
         setHeroes(data);
