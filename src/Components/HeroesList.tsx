@@ -1,12 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Hero } from "../types/hero";
-import HeroDetails from "../Components/HeroDetails";
+import { Link } from "react-router-dom";
 
 const URL = import.meta.env.VITE_API_URL;
 
 export default function HeroesList() {
   const [heroes, setHeroes] = useState<Hero[]>([]);
-  const [currHeroId, setCurrHeroId] = useState<number | null>(null);
 
   useEffect(() => {
     fetch(`${URL}/heroes`)
@@ -15,26 +14,6 @@ export default function HeroesList() {
         setHeroes(data);
       });
   }, []);
-
-  const currHero = heroes.find((hero) => hero.id === currHeroId);
-
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const updatedName = e.target.value;
-
-    //spread operator to create a new object and replace the original, not update
-    setHeroes((prevHeroes) =>
-      prevHeroes.map((hero) => {
-        if (hero.id === currHeroId) {
-          return { ...hero, name: updatedName };
-        }
-        return hero;
-      })
-    );
-  };
-
-  const handleCurrHero = (id: number) => {
-    setCurrHeroId(id);
-  };
 
   return (
     <>
@@ -47,8 +26,8 @@ export default function HeroesList() {
             equals
           () => () */}
         {heroes.map((hero) => (
-          <li
-            onClick={() => handleCurrHero(hero.id)}
+          <Link
+            to={`/heroes/${hero.id}`}
             key={hero.id}
             className="flex cursor-pointer"
           >
@@ -58,11 +37,9 @@ export default function HeroesList() {
             <span className="bg-yellow-300 rounded-r w-full p-2">
               {hero.name}
             </span>
-          </li>
+          </Link>
         ))}
       </ul>
-
-      <HeroDetails hero={currHero} onNameChange={handleNameChange} />
     </>
   );
 }
