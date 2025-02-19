@@ -1,20 +1,23 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Hero } from "../types/hero";
 import { useParams } from "react-router-dom";
+import { useMessages } from "../context/MessageContext";
 
 const URL = import.meta.env.VITE_API_URL;
 
 export default function HeroDetails() {
   const [hero, setHero] = useState<Hero | null>(null);
   const params = useParams();
+  const { addMessage } = useMessages();
 
   useEffect(() => {
     fetch(`${URL}/heroes/${params.id}`)
       .then((res) => res.json())
       .then((data) => {
         setHero(data);
+        addMessage(`Hero ${data.name.toUpperCase()} loaded`);
       });
-  }, [params.id]);
+  }, [params.id, addMessage]);
 
   if (!hero) return null;
 

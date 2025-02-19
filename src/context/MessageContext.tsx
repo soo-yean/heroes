@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 
 type MessageContextType = {
   messages: string[];
@@ -10,9 +16,14 @@ const MessageContext = createContext<MessageContextType | undefined>(undefined);
 
 const MessageProvider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessages] = useState<string[]>([]);
-  const addMessage = (message: string) => {
+
+  {
+    /*use useCallback because otherwise it will create new addMessage function everytime
+  (when 'message' is updated, addMessage function is cached and reused later)*/
+  }
+  const addMessage = useCallback((message: string) => {
     setMessages((prevMessages) => [...prevMessages, message]);
-  };
+  }, []);
   const clearMessage = () => {
     setMessages([]);
   };
