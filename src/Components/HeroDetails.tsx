@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Hero } from "../types/hero";
 import { useParams } from "react-router-dom";
 import { useMessages } from "../context/MessageContext";
@@ -10,13 +10,19 @@ export default function HeroDetails() {
   const params = useParams();
   const { addMessage } = useMessages();
 
+  const fetched = useRef(false);
+
   useEffect(() => {
-    fetch(`${URL}/heroes/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setHero(data);
-        addMessage(`Hero ${data.name.toUpperCase()} loaded`);
-      });
+    if (!fetched.current) {
+      fetch(`${URL}/heroes/${params.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setHero(data);
+          addMessage(`Hero ${data.name.toUpperCase()} loaded`);
+        });
+
+      fetched.current = true;
+    }
   }, [params.id, addMessage]);
 
   if (!hero) return null;

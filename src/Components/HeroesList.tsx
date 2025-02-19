@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Hero } from "../types/hero";
 import { Link } from "react-router-dom";
 import { useMessages } from "../context/MessageContext";
@@ -9,13 +9,18 @@ export default function HeroesList() {
   const [heroes, setHeroes] = useState<Hero[]>([]);
   const { addMessage } = useMessages();
 
+  const fetched = useRef(false);
+
   useEffect(() => {
-    fetch(`${URL}/heroes`)
-      .then((res) => res.json())
-      .then((data) => {
-        setHeroes(data);
-        addMessage("All heroes loaded");
-      });
+    if (!fetched.current) {
+      fetch(`${URL}/heroes`)
+        .then((res) => res.json())
+        .then((data) => {
+          setHeroes(data);
+          addMessage("All heroes loaded");
+        });
+      fetched.current = true;
+    }
   }, [addMessage]);
 
   return (

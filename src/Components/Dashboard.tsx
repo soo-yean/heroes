@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Hero } from "../types/hero";
 import { Link } from "react-router-dom";
 import { useMessages } from "../context/MessageContext";
@@ -9,13 +9,19 @@ export default function Dashboard() {
   const [heroes, setHeroes] = useState<Hero[]>([]);
   const { addMessage } = useMessages();
 
+  const fetched = useRef(false);
+
   useEffect(() => {
-    fetch(`${URL}/heroes?_limit=4`)
-      .then((res) => res.json())
-      .then((data) => {
-        setHeroes(data);
-        addMessage("Top heroes loaded");
-      });
+    if (!fetched.current) {
+      fetch(`${URL}/heroes?_limit=4`)
+        .then((res) => res.json())
+        .then((data) => {
+          setHeroes(data);
+          addMessage("Top heroes loaded");
+        });
+
+      fetched.current = true;
+    }
   }, [addMessage]);
 
   return (
