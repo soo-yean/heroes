@@ -23,6 +23,22 @@ export default function HeroesList() {
     }
   }, [addMessage]);
 
+  async function deleteHero(hero: Hero) {
+    try {
+      const res = await fetch(`${URL}/heroes/${hero.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error(res.statusText);
+
+      setHeroes((prevHeroes) => prevHeroes.filter((h) => h.id !== hero.id));
+      addMessage(`Hero ${hero.name} deleted`);
+    } catch (error) {
+      console.log(error);
+      addMessage("Failed to delete");
+    }
+  }
+
   return (
     <>
       <div className="flex gap-3">
@@ -47,9 +63,18 @@ export default function HeroesList() {
             <span className="bg-blue-600 text-white rounded-l p-2">
               {hero.id}
             </span>
-            <span className="bg-yellow-300 rounded-r w-full p-2">
-              {hero.name}
-            </span>
+            <div className="flex justify-between bg-yellow-300 rounded-r w-full p-2">
+              <span>{hero.name}</span>
+              <span
+                onClick={(e) => {
+                  e.preventDefault();
+                  deleteHero(hero);
+                }}
+                className="bg-amber-100 px-1 cursor-pointer"
+              >
+                X
+              </span>
+            </div>
           </Link>
         ))}
       </ul>
