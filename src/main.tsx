@@ -8,6 +8,7 @@ import Dashboard from "./Components/Dashboard.tsx";
 import HeroesList from "./Components/HeroesList.tsx";
 import HeroDetails from "./Components/HeroDetails.tsx";
 import { MessageProvider } from "./context/MessageContext.tsx";
+import HeroForm from "./Components/HeroForm.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/heroes" element={<HeroesList />} />
             <Route path="/heroes/:id" element={<HeroDetails />} />
+            <Route path="/heroes/create" element={<HeroForm />} />
           </Route>
         </Routes>
       </BrowserRouter>
