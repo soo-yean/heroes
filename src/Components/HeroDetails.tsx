@@ -77,10 +77,7 @@ export default function HeroDetails() {
               placeholder="name"
               defaultValue={hero.name}
             />
-            <button
-              type="submit"
-              className="p-2 bg-slate-700 text-white rounded-lg"
-            >
+            <button type="submit" className="btn">
               Submit
             </button>
           </div>
